@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Slint.VisualStudio.Core/Slint.VisualStudio.Core.csproj" />
+    <Project Path="src/Slint.VisualStudio/Slint.VisualStudio.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Slint.VisualStudio.Core.Tests/Slint.VisualStudio.Core.Tests.csproj" />
+  </Folder>
+</Solution>

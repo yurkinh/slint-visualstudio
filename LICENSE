@@ -1,0 +1,19 @@
+Slint for Visual Studio
+
+This project is a port of the Slint VS Code extension (editors/vscode in
+https://github.com/slint-ui/slint) and bundles slint-lsp release binaries
+from the same project. Slint is developed by SixtyFPS GmbH.
+
+SPDX-License-Identifier: GPL-3.0-only OR LicenseRef-Slint-Royalty-free-2.0 OR LicenseRef-Slint-Software-3.0
+
+You may use this software under the terms of any one of the following licenses:
+
+- GNU General Public License v3.0 only
+  https://github.com/slint-ui/slint/blob/master/LICENSES/GPL-3.0-only.txt
+- Slint Royalty-free Desktop, Mobile, and Web Applications License v2.0
+  https://github.com/slint-ui/slint/blob/master/LICENSES/LicenseRef-Slint-Royalty-free-2.0.md
+- Slint Software License v3.0
+  https://github.com/slint-ui/slint/blob/master/LICENSES/LicenseRef-Slint-Software-3.0.md
+
+The bundled slint-lsp binaries come with their own third-party license notices
+in the licenses/ folder next to the binaries.

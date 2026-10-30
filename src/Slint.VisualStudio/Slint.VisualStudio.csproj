@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows8.0</TargetFramework>
+    <RootNamespace>Slint.VisualStudio</RootNamespace>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <!-- LanguageServerProvider, settings, and output channel APIs are still marked preview. -->
+    <NoWarn>$(NoWarn);VSEXTPREVIEW_LSP;VSEXTPREVIEW_SETTINGS;VSEXTPREVIEW_OUTPUTWINDOW</NoWarn>
+    <!-- VSIX tooling is Windows-only; elsewhere just compile. -->
+    <CreateVsixContainer Condition="!$([MSBuild]::IsOSPlatform('Windows'))">false</CreateVsixContainer>
+    <DeployExtension Condition="!$([MSBuild]::IsOSPlatform('Windows'))">false</DeployExtension>
+    <SlintLspVersion>1.18.1</SlintLspVersion>
+    <SlintLspCacheDirectory>$(BaseIntermediateOutputPath)slint-lsp\$(SlintLspVersion)\</SlintLspCacheDirectory>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.VisualStudio.Extensibility.Sdk" Version="17.14.40608" />
+    <PackageReference Include="Microsoft.VisualStudio.Extensibility.Build" Version="17.14.40608" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Slint.VisualStudio.Core\Slint.VisualStudio.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SlintLspPackage Include="x86_64" Archive="slint-lsp-x86_64-pc-windows-msvc.zip" BinaryName="slint-lsp-x86_64-pc-windows-msvc.exe" />
+    <SlintLspPackage Include="aarch64" Archive="slint-lsp-aarch64-pc-windows-msvc.zip" BinaryName="slint-lsp-aarch64-pc-windows-msvc.exe" />
+  </ItemGroup>
+
+  <!-- Bundles the pinned slint-lsp release binaries; set SkipSlintLspDownload=true to rely on slint.lspBinaryPath instead. -->
+  <Target Name="FetchSlintLsp" BeforeTargets="AssignTargetPaths" Condition="'$(SkipSlintLspDownload)' != 'true'">
+    <DownloadFile SourceUrl="https://github.com/slint-ui/slint/releases/download/v$(SlintLspVersion)/%(SlintLspPackage.Archive)" DestinationFolder="$(SlintLspCacheDirectory)" SkipUnchangedFiles="true" />
+    <Unzip SourceFiles="$(SlintLspCacheDirectory)%(SlintLspPackage.Archive)" DestinationFolder="$(SlintLspCacheDirectory)%(SlintLspPackage.Identity)" SkipUnchangedFiles="true" />
+    <ItemGroup>
+      <Content Include="$(SlintLspCacheDirectory)%(SlintLspPackage.Identity)\slint-lsp.exe" Link="bin\%(SlintLspPackage.BinaryName)" CopyToOutputDirectory="PreserveNewest" />
+      <Content Include="$(SlintLspCacheDirectory)x86_64\licenses\*.md" Link="bin\licenses\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    </ItemGroup>
+  </Target>
+
+</Project>
